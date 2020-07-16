@@ -16,6 +16,7 @@ keyword: dynamic object removal, generative adversarial network, CycleGAN, unpai
 <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/input_3.jpg" alt="属性" title="タイトル">
 </div>
 
+
 2. Generating an image without the human
 
 <div align="center">
