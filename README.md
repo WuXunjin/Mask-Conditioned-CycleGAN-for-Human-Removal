@@ -34,9 +34,9 @@ keyword: dynamic object removal, generative adversarial network, CycleGAN, unpai
 <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/GraphicalAbstract1.png" alt="属性" title="タイトル">
 </div>
 
-<br>
+**Block diagram of our application**
 
-**Block diagram of our proposed network**
+<br>
 
 **Training:** In the cycle process, for the given images with a human in
 domain X and images without a human in domain Y , the generator G tries to create non-occluded images of G(x) that are
