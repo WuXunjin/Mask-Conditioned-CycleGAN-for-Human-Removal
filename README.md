@@ -22,7 +22,10 @@ keyword: dynamic object removal, generative adversarial network, CycleGAN, unpai
 
 # Application Architecture
 
-![system](https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/GraphicalAbstract1.png)
+<div align="center">
+<img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/GraphicalAbstract1.png" alt="属性" title="タイトル">
+</div>
+
 
 
 # Usage
