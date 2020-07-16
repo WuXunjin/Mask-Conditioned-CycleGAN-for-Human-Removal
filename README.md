@@ -10,9 +10,11 @@ keyword: dynamic object removal, generative adversarial network, CycleGAN, unpai
 
 1. Taking a single image with a human as an input
 
+<div align="center">
 ![input_1](https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/input_1.jpg)
 ![input_2](https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/input_2.jpg)
 ![input_3](https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/input_3.jpg)
+</div>
 
 2. Generating an image without the human
 
