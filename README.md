@@ -55,6 +55,14 @@ of the generated images.
 
 # Dataset
 
+<div align="center">
+<img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/domain_X_Y_small.png" alt="属性" title="タイトル">
+</div>
+
+<div align="center">
+Examples of our dataset: images with a farmer in domain X (left) and images without a farmer in domain $Y$ (right)
+</div>
+
 Currently, our agricultural dataset is not open to the public.
 
 <!--
