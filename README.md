@@ -60,10 +60,12 @@ of the generated images.
 </div>
 
 <div align="center">
-Examples of our dataset: images with a farmer in domain X (left) and images without a farmer in domain $Y$ (right)
+Examples of our dataset: images with a farmer in domain X (left) and images without a farmer in domain Y (right)
 </div>
 
-Currently, our agricultural dataset is not open to the public.
+<br>
+
+※ Currently, our agricultural dataset is not open to the public.
 
 <!--
 
