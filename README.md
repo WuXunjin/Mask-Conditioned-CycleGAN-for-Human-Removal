@@ -51,6 +51,10 @@ of the generated images.
 
 <br>
 
+# Dataset
+
+Currently, my agricultural dataset is not open to the public.
+
 # Usage
 
 ## 1. 
