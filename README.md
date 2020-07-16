@@ -53,7 +53,7 @@ of the generated images.
 
 # Dataset
 
-Currently, my agricultural dataset is not open to the public.
+Currently, my agricultural dataset is not open to the public due to copyright.
 
 # Usage
 
