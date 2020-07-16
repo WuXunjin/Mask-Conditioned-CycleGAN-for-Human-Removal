@@ -9,7 +9,7 @@ keyword: dynamic object removal, generative adversarial network, CycleGAN, unpai
 # Demo
 
 1. Taking a single image with a human as an input
-![car1](https://github.com/akadahiroyasu/djangoai/blob/master/images_for_readme/window_1.png)
+![input_1](https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/input_1.jpg)
 
 2. Generating an image without the human
 ![car1](https://github.com/akadahiroyasu/djangoai/blob/master/images_for_readme/window_1.png)
