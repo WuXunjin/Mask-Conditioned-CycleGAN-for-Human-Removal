@@ -57,7 +57,7 @@ of the generated images.
 
 Currently, our agricultural dataset is not open to the public.
 
-<b--
+<--
 
 # Usage
 
