@@ -36,8 +36,15 @@ keyword: dynamic object removal, generative adversarial network, CycleGAN, unpai
 
 <br>
 
-Block diagram of our proposed network: 
-(Training) In the cycle process, for the given images with a human in domain $X$ and images without a human in domain $Y$, the generator $G$ tries to create non-occluded images of $G(x)$ that are indistinguishable from the images in $Y$ and the discriminator $D_y$ tries to distinguish the fake from the real images, where adversarial loss is calculated. Then, the generator $F$ tries to generate indistinguishable images of $F(y)$ from the images in $X$, where cycle consistency loss is calculated (and vice versa). In the mask process, mask images are extracted from the ones in $X$ and used to cut out the human-shaped area of both images in $X$ and $G(x)$, yielding images of $X_{mask}$ and $G(x)_{mask}$. Then, we compute MSE loss between the images of $X_{mask}$ and the corresponding $G(x)_{mask}$ images. (Testing) The generator $G$ is used to translate occluded images into realistic static images without the farmer to evaluate the quality of the generated images.
+Block diagram of our proposed network. (Training) In the cycle process, for the given images with a human in
+domain X and images without a human in domain Y , the generator G tries to create non-occluded images of G(x) that are
+indistinguishable from the images in Y and the discriminator Dy tries to distinguish the fake from the real images, where
+adversarial loss is calculated. Then, the generator F tries to generate indistinguishable images of F(y) from the images
+in X, where cycle consistency loss is calculated (and vice versa). In the mask process, mask images are extracted from
+the ones in X and used to cut out the human-shaped area of both images in X and G(x), yielding images of Xmask and
+G(x)mask. Then, we compute MSE loss between the images of Xmask and the corresponding G(x)mask images. (Testing)
+The generator G is used to translate occluded images into realistic static images without the farmer to evaluate the quality
+of the generated images.
 
 <br>
 
