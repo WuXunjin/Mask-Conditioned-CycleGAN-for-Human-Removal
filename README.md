@@ -57,10 +57,15 @@ of the generated images.
 
 Currently, our agricultural dataset is not open to the public.
 
+<b--
+
 # Usage
 
 ## 1. 
 
 ## 2. 
 
+-->
+
 # References
+["Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks"](https://arxiv.org/abs/1703.10593)
