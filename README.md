@@ -2,13 +2,13 @@
 
 # Description
 
-End-to-End GAN-based Application to remove objects (humans) in images of an agricultural setting and to reconstruct the occluded areas with plausible background.
+End-to-End GAN-based Application to remove objects (humans) in images and to reconstruct the occluded areas with plausible background.
 
 keywords: dynamic object removal, generative adversarial network, CycleGAN, unpaired images
 
 # Demo
 
-1. Taking a single image with a human as an input
+1. Taking a single image with a human as an input (e.g. in an agricultural setting)
 
 <div align="center">
 <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/input_1.jpg" alt="属性" title="タイトル">
