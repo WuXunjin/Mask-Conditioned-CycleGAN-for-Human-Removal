@@ -2,7 +2,7 @@
 
 # Description
 
-End-to-End GAN-based Application to remove objects (humans) in images and to reconstruct the occluded areas with plausible background.
+GAN-based Application to remove objects (humans) in images and to reconstruct the occluded areas with plausible background.
 
 keywords: dynamic object removal, generative adversarial network, CycleGAN, unpaired images
 
