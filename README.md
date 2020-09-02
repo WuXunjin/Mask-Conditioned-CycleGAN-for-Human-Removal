@@ -65,6 +65,8 @@ Examples of our dataset: images with a farmer in domain X (left) and images with
 
 <br>
 
+Our training dataset comprises 77,849 images: 32,705 images with the worker for domain X and 45,144 images without the worker for domain Y.
+
 ※ Currently, our agricultural dataset is not open to the public.
 
 <!--
