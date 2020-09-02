@@ -65,7 +65,9 @@ Examples of our dataset: images with a farmer in domain X (left) and images with
 
 <br>
 
-Our training dataset comprises 77,849 images: 32,705 images with the worker for domain X and 45,144 images without the worker for domain Y.
+Our training dataset comprises 77,849 images: 32,705 images with the worker for domain X and 45,144 images without the worker for domain Y. 
+In addition, to analyze our system qualitatively and quantitatively, we prepared 527 images without a human in the farm 
+and created corresponding synthetic images with a human.
 
 ※ Currently, our agricultural dataset is not open to the public.
 
