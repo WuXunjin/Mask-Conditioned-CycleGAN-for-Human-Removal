@@ -8,7 +8,7 @@ keywords: dynamic object removal, generative adversarial network, CycleGAN, unpa
 
 # Demo
 
-1. Taking a single image with a human as an input (e.g. in an agricultural setting)
+### 1. Taking a single image with a human as an input (e.g. in an agricultural setting)
 
 <div align="center">
 <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/input_1.jpg" alt="属性" title="タイトル">
@@ -18,7 +18,7 @@ keywords: dynamic object removal, generative adversarial network, CycleGAN, unpa
 
 <br>
 
-2. Generating an image without the human
+### 2. Generating an image without the human
 
 <div align="center">
 <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/output_1.jpg" alt="属性" title="タイトル">
