@@ -60,7 +60,7 @@ of the generated images.
 </div>
 
 <div align="center">
-Examples of our dataset: images with a farmer in domain X (left) and images without a farmer in domain Y (right). Note that for training we prepared mask images corresponding to domain X.
+Examples of our dataset: images with a farmer in domain X (left) and images without a farmer in domain Y (right).
 </div>
 
 <br>
