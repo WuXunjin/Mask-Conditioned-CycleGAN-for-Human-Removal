@@ -79,59 +79,53 @@ Tested on ...
 - One or more NVIDIA GPUs
 - NVIDIA drivers, CUDA 9.0 toolkit and cuDNN 7.5
 - Python 3.6, PyTorch 1.1
-- For docker user, please use the [provided Dockerfile](https://github.com/hiroyasuakada/CycleGAN-PyTorch/blob/main/docker_ITC/dockerfile). (highly recommended)
+- For docker user, please use the [provided Dockerfile](https://github.com/hiroyasuakada/Mask-Conditioned-CycleGAN-for-Human-Removal/blob/master/docker_ITC/dockerfile). (highly recommended)
 
 # Usage
-## ① Train CycleGAN
+## Train CycleGAN
 
 ### 1. Download this repository
 
-        git clone https://github.com/hiroyasuakada/CycleGAN-PyTorch.git
-        cd CycleGAN-PyTorch
-
+        git clone https://github.com/hiroyasuakada/Mask-Conditioned-CycleGAN-for-Human-Removal.git
+        cd Mask-Conditioned-CycleGAN-for-Human-Removal
 ### 2. Prepare dataset
 
         mkdir dataset
         cd dataset
 
-Please put your dataset in `dataset` folder or download public datasets from [here](https://people.eecs.berkeley.edu/~taesung_park/CycleGAN/datasets/).
+Please put your dataset in `dataset` folder.
 
 | Example of folder relation | &nbsp;
 | :--- | :----------
 | dataset
-| &boxur;&nbsp; hourse2zebra
-| &ensp;&ensp; &boxur;&nbsp;  trainA | image domain A for training
-| &ensp;&ensp; &boxur;&nbsp;  trainB | image domain B for training
-| &ensp;&ensp; &boxur;&nbsp;  testA | image domain A for testing
-| &ensp;&ensp; &boxur;&nbsp;  testB | image domain B for testing
+| &boxur;&nbsp; [YOUR DATASET NAME]
+| &ensp;&ensp; &boxur;&nbsp;  trainA | training images in domain A
+| &ensp;&ensp; &boxur;&nbsp;  trainB | training images in domain B
+| &ensp;&ensp; &boxur;&nbsp;  trainA_mask | mask images in domain A
+| &ensp;&ensp; &boxur;&nbsp;  testA | testing images in domain A
+| &ensp;&ensp; &boxur;&nbsp;  testB | testing images in domain B
 
-and then move back to `CycleGAN-PyTorch` folder by `cd ..` command.
+and then move back to `Mask-Conditioned-CycleGAN-for-Human-Removal` folder by `cd ..` command.
 
 
 ### 3. Train the model
 
-        python train.py [DATASET NAME]
-        
-        # for example
-        python train.py horse2zebra
+        python train.py [YOUR DATASET NAME]
         
 This will create `logs` folder in which training details and generated images at each epoch during the training will be saved. 
         
 If you have multiple GPUs, 
 
-        python train.py horse2zebra --gpu_ids 0 1 --batch_size 4 
+        python train.py [YOUR DATASET NAME] --gpu_ids 0 1 --batch_size 4 
 
 If you want to resume training from a certain epoch, (for example, epoch 25)
 
-        python train.py house2zebra --load_epoch 25
-
-The image is supposed to be a square then this will be resized to 256 × 256.
+        python train.py [YOUR DATASET NAME] --load_epoch 25
 
 For more information about training setting, please run `python train.py --help`.
 
 
-
-### 3. Test the model
+### 4. Test the model
 
         python test.py [DATASET NAME] [LOAD EPOCH]
         
