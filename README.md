@@ -53,7 +53,7 @@ of the generated images.
 
 <br>
 
-# Our Dataset (Currently not open to the public)
+# Our Dataset
 
 <div align="center">
 <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/domain_X_Y_small.png" alt="属性" title="タイトル">
@@ -82,7 +82,7 @@ Tested on ...
 - For docker user, please use the [provided Dockerfile](https://github.com/hiroyasuakada/Mask-Conditioned-CycleGAN-for-Human-Removal/blob/master/docker_ITC/dockerfile). (highly recommended)
 
 # Usage
-## Train CycleGAN
+## Train Mask-Conditioned CycleGAN with your custom dataset
 
 ### 1. Download this repository
 
