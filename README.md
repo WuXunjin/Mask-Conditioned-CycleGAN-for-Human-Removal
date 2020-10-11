@@ -1,4 +1,4 @@
-# dynamic-object-removal-with-unpaired-images
+# Mask-Conditioned-CycleGAN-for-Object-Removal
 
 # Description
 
