@@ -53,7 +53,7 @@ of the generated images.
 
 <br>
 
-# Dataset
+# Our Dataset (Currently not open to the public)
 
 <div align="center">
 <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/domain_X_Y_small.png" alt="属性" title="タイトル">
