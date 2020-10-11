@@ -4,6 +4,8 @@
 
 GAN-based Application to remove objects (humans) in images and to reconstruct the occluded areas with plausible background.
 
+You can train the model **with your custom dataset**.
+
 keywords: dynamic object removal, generative adversarial network, CycleGAN, unpaired images
 
 # Demo
@@ -95,12 +97,14 @@ Tested on ...
 
 Please put your dataset in `dataset` folder.
 
+If you don't have
+
 | Example of folder relation | &nbsp;
 | :--- | :----------
 | dataset
 | &boxur;&nbsp; [YOUR DATASET NAME]
-| &ensp;&ensp; &boxur;&nbsp;  trainA | training images in domain A
-| &ensp;&ensp; &boxur;&nbsp;  trainB | training images in domain B
+| &ensp;&ensp; &boxur;&nbsp;  trainA | training images with a human in domain A
+| &ensp;&ensp; &boxur;&nbsp;  trainB | training images without a human in domain B
 | &ensp;&ensp; &boxur;&nbsp;  trainA_mask | mask images in domain A
 | &ensp;&ensp; &boxur;&nbsp;  testA | testing images in domain A
 | &ensp;&ensp; &boxur;&nbsp;  testB | testing images in domain B
