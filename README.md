@@ -130,7 +130,7 @@ For more information about training setting, please run `python train.py --help`
         python test.py [DATASET NAME] [LOAD EPOCH]
         
         # for example, if you want to test your model at epoch 25
-        python test.py horse2zebra 25
+        python test.py [DATASET NAME] 25
         
 This will create `generated_imgs` folder in which you can find generated images from your model.
 
