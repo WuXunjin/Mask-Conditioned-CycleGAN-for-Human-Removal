@@ -1,4 +1,4 @@
-# dynamic-object-removal-with-unpaired-images
+# Mask-Conditioned-CycleGAN-for-Human-Removal
 
 # Description
 
@@ -8,20 +8,20 @@ keywords: dynamic object removal, generative adversarial network, CycleGAN, unpa
 
 # Demo
 
-1. Taking a single image with a human as an input (e.g. in an agricultural setting)
+### 1. Taking a single image with a human as an input (e.g. in an agricultural setting)
 
 <div align="center">
-<img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/input_1.jpg" alt="属性" title="タイトル">
+<!-- <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/input_1.jpg" alt="属性" title="タイトル"> -->
 <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/input_2.jpg" alt="属性" title="タイトル">
 <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/input_3.jpg" alt="属性" title="タイトル">
 </div>
 
 <br>
 
-2. Generating an image without the human
+### 2. Generating an image without the human
 
 <div align="center">
-<img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/output_1.jpg" alt="属性" title="タイトル">
+<!-- <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/output_1.jpg" alt="属性" title="タイトル"> -->
 <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/output_2.jpg" alt="属性" title="タイトル">
 <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/output_3.jpg" alt="属性" title="タイトル">
 </div>
@@ -64,6 +64,10 @@ Examples of our dataset: images with a farmer in domain X (left) and images with
 </div>
 
 <br>
+
+Our training dataset comprises 77,849 images: 32,705 images with the worker for domain X and 45,144 images without the worker for domain Y. 
+In addition, to analyze our system qualitatively and quantitatively, we prepared 527 images without a human in the farm 
+and created corresponding synthetic images with a human.
 
 ※ Currently, our agricultural dataset is not open to the public.
 
