@@ -1,4 +1,4 @@
-# Mask-Conditioned-CycleGAN-for-Object-Removal
+# Mask-Conditioned-CycleGAN-for-Human-Removal
 
 # Description
 
