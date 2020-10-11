@@ -2,7 +2,7 @@
 
 # Description
 
-Mask-Conditioned-CycleGAN to remove objects (humans) in images and to reconstruct the occluded areas with plausible background.
+Mask-Conditioned CycleGAN to remove objects (humans) in images and to reconstruct the occluded areas with plausible background.
 
 You can train Mask-Conditioned-CycleGAN **with your custom dataset**.
 
