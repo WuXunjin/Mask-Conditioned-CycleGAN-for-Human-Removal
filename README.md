@@ -2,9 +2,11 @@
 
 # Description
 
-GAN-based Application to remove objects (humans) in images and to reconstruct the occluded areas with plausible background.
+Mask-Conditioned-CycleGAN to remove objects (humans) in images and to reconstruct the occluded areas with plausible background.
 
-You can train the model **with your custom dataset**.
+You can train Mask-Conditioned-CycleGAN **with your custom dataset**.
+
+If you want to use normal CycleGAN implementation, please see [this repository](https://github.com/hiroyasuakada/CycleGAN-PyTorch)
 
 keywords: dynamic object removal, generative adversarial network, CycleGAN, unpaired images
 
