@@ -143,8 +143,5 @@ For more information about testing setting, please run `python test.py --help`.
         
 ## Reference
 
-- **pytorch-CycleGAN-and-pix2pix[official]**: https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
+- [**"Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks"**](https://arxiv.org/abs/1703.10593)
 
-
-# References
-["Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks"](https://arxiv.org/abs/1703.10593)
