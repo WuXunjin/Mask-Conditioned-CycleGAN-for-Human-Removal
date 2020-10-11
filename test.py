@@ -1,126 +1,140 @@
 import os
 import random
+import argparse
 import itertools
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.utils.data
-import torchvision.transforms as transforms
-from torchvision.utils import make_grid
-from torch.autograd import Variable
-from PIL import Image
-import matplotlib.pyplot as plt
+from torchvision import utils 
 from tensorboardX import SummaryWriter
 import time
-import cv2
 
-##################################################################
 from dataset import UnalignedDataset
 from model_base import ResNetBlock, Generator, Discriminator
 from model_cyclegan import CycleGAN
-##################################################################
 
 
-def test(log_dir, device, lr, beta1, lambda_idt, lambda_A, lambda_B, lambda_mask,
-          num_epoch, num_epoch_resume, save_epoch_freq, test_loader, epoch_label):
-    model = CycleGAN(log_dir=log_dir, device=device, lr=lr, beta1=beta1, lambda_idt=lambda_idt,
-                     lambda_A=lambda_A, lambda_B=lambda_B, lambda_mask=lambda_mask, mode_train=False)
+def save_imgs(imgs, name_imgs, epoch_label):
+    img_table_name = '{}_'.format(epoch_label) + name_imgs + '.png'
+    save_path = os.path.join('generated_imgs', img_table_name)
+
+    utils.save_image(
+        imgs,
+        save_path,
+        nrow=1,
+        normalize=True,
+        range=(-1, 1)
+    )
+        
+def test(device, log_dir, gpu_ids, batch_size, lr, beta1, lambda_idt, lambda_A, lambda_B, load_epoch, test_loader):
+    model = CycleGAN(device=device, log_dir=log_dir, gpu_ids=gpu_ids)
     model.log_dir = log_dir
-    model.load(epoch_label)
+    print('load model {}'.format(load_epoch))
+    model.load('epoch_' + str(load_epoch))
+
+    if not os.path.exists('generated_imgs'):
+        os.makedirs('generated_imgs')
 
     time_list = []
+    with torch.no_grad():
+        for batch_idx, data in enumerate(test_loader):
+            t1 = time.perf_counter()
 
-    for batch_idx, data in enumerate(test_loader):
-        t1 = time.perf_counter()
+            real_A = data['A'].to(device)
+            real_B = data['B'].to(device)
+            fake_B = model.netG_A(real_A)
+            fake_A = model.netG_B(real_B)
 
-        # generate images
-        fake_B = model.netG_A(data['A'].to(device))
+            save_imgs(real_A, 'real_A', 'epoch_' + str(load_epoch))
+            save_imgs(real_B, 'real_B', 'epoch_' + str(load_epoch))
+            save_imgs(fake_B, 'fake_B', 'epoch_' + str(load_epoch))
+            save_imgs(fake_A, 'fake_A', 'epoch_' + str(load_epoch))
 
-        # transpose axis
-        real_A = data['A'].permute(0, 2, 3, 1)
-        fake_B = fake_B.data.permute(0, 2, 3, 1)
+            t2 = time.perf_counter()
+            get_processing_time = t2 - t1
+            time_list.append(get_processing_time)
 
-        # [-1,1] => [0, 1]
-        real_A = 0.5 * (real_A + 1) * 255
-        fake_B = 0.5 * (fake_B + 1) * 255
+            if batch_idx % 10 == 0:
+                print('batch: {} / elapsed_time: {} sec'.format(batch_idx, sum(time_list)))
+                time_list = []
 
-        # tensor to array
-        device2 = torch.device('cpu')
-        real_A = real_A.to(device2)
-        real_A = real_A.detach().clone().numpy()
-        fake_B = fake_B.to(device2)
-        fake_B = fake_B.detach().clone().numpy()
-
-        if not os.path.exists('./{}/real_A'.format(log_dir)):
-            os.mkdir('./{}/real_A'.format(log_dir))
-        if not os.path.exists('./{}/fake_B'.format(log_dir)):
-            os.mkdir('./{}/fake_B'.format(log_dir))
-
-        for i in range(real_A.shape[0]):
-            file_name = data['path_A'][i].split('/')[3]
-
-            print(file_name)
-
-            save_path_real_A = './{}/real_A/'.format(log_dir) + file_name
-            save_path_fake_B = './{}/fake_B/'.format(log_dir) + file_name
-
-            real_A_id_i = real_A[i]
-            fake_B_id_i = fake_B[i]
-
-            real_A_id_i = cv2.cvtColor(real_A_id_i, cv2.COLOR_RGB2BGR)
-            fake_B_id_i = cv2.cvtColor(fake_B_id_i, cv2.COLOR_RGB2BGR)
-
-            cv2.imwrite(save_path_real_A, real_A_id_i)
-            cv2.imwrite(save_path_fake_B, fake_B_id_i)
-
-        t2 = time.perf_counter()
-        get_processing_time = t2 - t1
-        time_list.append(get_processing_time)
-
-        if batch_idx % 10 == 0:
-            print('batch: {} / elapsed_time: {} sec'.format(batch_idx, sum(time_list)))
-            time_list = []
+        print('done!')
 
 
 if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='CycleGAN trainer')
+
+    parser.add_argument(
+        'name_dataset', type=str, help='name of your testing image dataset'
+    )
+    parser.add_argument(
+        'load_epoch', type=int, default=0, help='epochs for testing '
+    )
+    parser.add_argument(
+        '--path_log', type=str, default='logs', help='path to dict where log of training details was saved'
+    )
+    parser.add_argument(
+        '--gpu_ids', type=int, nargs='+', default=[0], help='gpu ids'
+    )
+    parser.add_argument(
+        '--num_epoch', type=int, default=400, help='total training epochs'
+    )
+    parser.add_argument(
+        '--save_freq', type=int, default=1, help='frequency of saving log'
+    )
+    parser.add_argument(
+        '--load_size', type=int, default=256, help='original image sizes to be loaded'
+    )    
+    parser.add_argument(
+        '--crop_size', type=int, default=256, help='image sizes to be cropped'
+    )
+    parser.add_argument(
+        '--batch_size', type=int, default=1, help='batch_size for each gpu'
+    )
+    parser.add_argument(
+        '--lr', type=int, default=0.0002, help='learning rate'
+    )
+    parser.add_argument(
+        '--beta1', type=int, default=0.5, help='learning rate'
+    )
+    parser.add_argument(
+        '--lambda_idt', type=int, default=5, help='weights of identity loss'
+    )    
+    parser.add_argument(
+        '--lambda_A', type=int, default=10, help='weights of adversarial loss for A to B'
+    )    
+    parser.add_argument(
+        '--lambda_B', type=int, default=10, help='weights of adversarial loss for B to A'
+    )
+    parser.add_argument(
+        '--lambda_mask', type=int, default=10, help='weights of Mask loss'
+    )
+
+    args = parser.parse_args()
 
     # random seeds
     torch.manual_seed(1234)
     np.random.seed(1234)
     random.seed(1234)
 
-    # image
-    height = 128
-    width = 256
-
-    # training details
-    batch_size = 1
-    lr = 0.0002  # initial learning rate for adam
-    beta1 = 0.5  # momentum term of adam
-
-    num_epoch = 100
-    num_epoch_resume = 0
-    save_epoch_freq = 5
-
-    # weights of loss function
-    lambda_idt = 5
-    lambda_A = 10.0
-    lambda_B = 10.0
-    lambda_mask = 0.0
-
-    # files, dirs
-    log_dir = 'logs_B8_E50_5_10_10'
-
     # gpu
-    device = torch.device("cuda:0" if torch.cuda.is_available else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available else "cpu")
     print('device {}'.format(device))
 
     # dataset
-    test_dataset = UnalignedDataset(is_train=False)
-    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=4, shuffle=True)
+    test_dataset = UnalignedDataset(
+        name_dataset=args.name_dataset, 
+        load_size=args.load_size, 
+        crop_size=args.crop_size, 
+        is_train=False
+    )
+    test_loader = torch.utils.data.DataLoader(
+        test_dataset, 
+        batch_size=1,
+        shuffle=True
+    )
 
-    # test
-    epoch_label = 'epoch50'
-
-    test(log_dir, device, lr, beta1, lambda_idt, lambda_A, lambda_B, lambda_mask,
-          num_epoch, num_epoch_resume, save_epoch_freq, test_loader, epoch_label)
+    # train
+    test(device, args.path_log, args.gpu_ids, 1, args.lr, args.beta1, args.lambda_idt, args.lambda_A, args.lambda_B,
+         args.load_epoch, test_loader)

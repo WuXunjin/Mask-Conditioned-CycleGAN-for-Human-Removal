@@ -4,15 +4,9 @@ import itertools
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.utils.data
-import torchvision.transforms as transforms
-from torchvision.utils import make_grid
-from torch.autograd import Variable
+from torchvision import utils 
 from PIL import Image
-import matplotlib.pyplot as plt
-from tensorboardX import SummaryWriter
 import time
-import cv2
 
 from dataset import UnalignedDataset
 from model_base import Generator, Discriminator
@@ -20,12 +14,11 @@ from model_base import Generator, Discriminator
 
 class CycleGAN(object):
 
-    def __init__(self, log_dir='logs', device='cuda:0', lr=0.0002, beta1=0.5,
-                 lambda_idt=5.0, lambda_A=10.0, lambda_B=10.0, lambda_mask=0.0):
+    def __init__(self, device='cuda:0', log_dir='logs', gpu_ids=0, lr=0.0002, beta1=0.5,
+                 lambda_idt=5, lambda_A=10.0, lambda_B=10.0, lambda_mask=10.0):
         self.lr = lr
         self.beta1 = beta1
         self.device = device
-        self.gpu_ids = [0, 1]  # 0, 1, 2
 
         self.netG_A = Generator().to(self.device)
         self.netG_B = Generator().to(self.device)
@@ -35,10 +28,11 @@ class CycleGAN(object):
         print(torch.cuda.is_available())
 
         # multi-GPUs
-        self.netG_A = torch.nn.DataParallel(self.netG_A, self.gpu_ids)
-        self.netG_B = torch.nn.DataParallel(self.netG_B, self.gpu_ids)
-        self.netD_A = torch.nn.DataParallel(self.netD_A, self.gpu_ids)
-        self.netD_B = torch.nn.DataParallel(self.netD_B, self.gpu_ids)
+        self.netG_A = torch.nn.DataParallel(self.netG_A, gpu_ids)
+        self.netG_B = torch.nn.DataParallel(self.netG_B, gpu_ids)
+        self.netD_A = torch.nn.DataParallel(self.netD_A, gpu_ids)
+        self.netD_B = torch.nn.DataParallel(self.netD_B, gpu_ids)
+        print('will use gpus: {}'.format(gpu_ids))
 
         self.fake_A_pool = ImagePool(50)
         self.fake_B_pool = ImagePool(50)
@@ -72,15 +66,9 @@ class CycleGAN(object):
             os.makedirs(self.log_dir)
 
     def set_input(self, input):
-        # self.real_A = input['A']
-        # self.real_B = input['B']
-        # self.real_A_mask = input['A_mask']
-
         self.real_A = input['A'].to(self.device)
         self.real_B = input['B'].to(self.device)
         self.real_A_mask = input['A_mask'].to(self.device)
-
-        # self.image_paths = input['path_A']
 
     def backward_G(self, real_A, real_B, real_A_mask):
 
@@ -112,15 +100,11 @@ class CycleGAN(object):
         rec_B = self.netG_A(fake_A)
         loss_cycle_B = self.criterionCycle(rec_B, real_B) * self.lambda_B
 
-        ############################################################################################
-
         # mse for mase as a new loss function
         if self.lambda_mask == 0:
             loss_mask = torch.tensor(0).to(self.device)
         else:
             loss_mask = self.criterionMask(real_A, fake_B, real_A_mask) * self.lambda_mask
-
-        ############################################################################################
 
         # combined loss
         loss_G = loss_G_A + loss_G_B + loss_cycle_A + loss_cycle_B + loss_idt_A + loss_idt_B + loss_mask
@@ -188,11 +172,13 @@ class CycleGAN(object):
         loss_D_B = self.backward_D_B(self.real_A, fake_A)
         self.optimizer_D_B.step()
 
-        ret_loss = [loss_G_A, loss_D_A,
-                    loss_G_B, loss_D_B,
-                    loss_cycle_A, loss_cycle_B,
-                    loss_idt_A, loss_idt_B,
-                    loss_mask]
+        ret_loss = [
+            loss_G_A, loss_D_A,
+            loss_G_B, loss_D_B,
+            loss_cycle_A, loss_cycle_B,
+            loss_idt_A, loss_idt_B,
+            loss_mask
+        ]
 
         return np.array(ret_loss)
 
@@ -211,8 +197,8 @@ class CycleGAN(object):
             get_processing_time = t2 - t1
             time_list.append(get_processing_time)
 
-            if batch_idx % 500 == 0:
-                print('batch: {} / elapsed_time: {} sec'.format(batch_idx, sum(time_list)))
+            if batch_idx % 50 == 0:
+                print('batch: {} / {}, elapsed_time: {} sec'.format(batch_idx, len(data_loader), sum(time_list)))
                 time_list = []
 
         running_loss /= len(data_loader)
@@ -222,12 +208,6 @@ class CycleGAN(object):
         save_filename = '{}_net_{}.pth'.format(epoch_label, network_label)
         save_path = os.path.join(self.log_dir, save_filename)
 
-        #         torch.save({'epoch': epoch_label,
-        #                     'model_state_dict': network.cpu().state_dict(),
-        #                     'optimizer_state_dict': optimizer.cpu().state_dict(),
-        #                     'loss': loss}, save_path)
-        #         network.to(device)
-
         torch.save(network.cpu().state_dict(), save_path)
         network.to(self.device)
 
@@ -235,8 +215,6 @@ class CycleGAN(object):
         load_filename = '{}_net_{}.pth'.format(epoch_label, network_label)
         load_path = os.path.join(self.log_dir, load_filename)
         network.load_state_dict(torch.load(load_path))
-
-    #         network = torch.nn.DataParallel(network, self.gpu_ids)
 
     def save(self, label):
         self.save_network(self.netG_A, 'G_A', label)
@@ -250,6 +228,37 @@ class CycleGAN(object):
         self.load_network(self.netG_B, 'G_B', label)
         self.load_network(self.netD_B, 'D_B', label)
 
+    def save_imgs(self, imgs, name_imgs, batch_size, epoch_label):
+        img_table_name = '{}_'.format(epoch_label) + name_imgs + '.png'
+        save_path = os.path.join(self.log_dir, img_table_name)
+        if batch_size <= 16:
+            utils.save_image(
+                imgs,
+                save_path,
+                nrow=int(batch_size ** 0.5),
+                normalize=True,
+                range=(-1, 1)
+            )
+        else:
+            utils.save_image(
+                imgs,
+                save_path,
+                nrow=int(16 ** 0.5),
+                normalize=True,
+                range=(-1, 1)
+            )
+
+    def generate_imgs(self, epoch_label, batch_size):
+        real_A = self.real_A
+        real_B = self.real_B
+        fake_B = self.netG_A(real_A)
+        fake_A = self.netG_B(real_B)
+
+        self.save_imgs(real_A, 'real_A', batch_size, epoch_label)
+        self.save_imgs(real_B, 'real_B', batch_size, epoch_label)
+        self.save_imgs(fake_B, 'fake_B', batch_size, epoch_label)
+        self.save_imgs(fake_A, 'fake_A', batch_size, epoch_label)
+        
 
 class ImagePool(object):
     def __init__(self, pool_size):
@@ -290,8 +299,6 @@ class GANLoss(nn.Module):
         self.real_label_var = None
         self.fake_label_var = None
         self.loss = nn.MSELoss()
-#         self.device = torch.device("cuda" if torch.cuda.is_available else "cpu")
-#         self.cuda = torch.cuda.is_available()
 
     def get_target_tensor(self, input, target_is_real):
         target_tensor = None
