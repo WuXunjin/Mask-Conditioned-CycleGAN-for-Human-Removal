@@ -97,7 +97,8 @@ Tested on ...
 
 Please put your dataset in `dataset` folder.
 
-If you don't have
+If you don't have mask images, please use [this application](https://github.com/hiroyasuakada/Mask-RCNN-Detectron2-for-Human-Extraction) 
+to get them. (Note that 'cropped_figure' is equivalent to our mask image.)
 
 | Example of folder relation | &nbsp;
 | :--- | :----------
@@ -106,8 +107,8 @@ If you don't have
 | &ensp;&ensp; &boxur;&nbsp;  trainA | training images with a human in domain A
 | &ensp;&ensp; &boxur;&nbsp;  trainB | training images without a human in domain B
 | &ensp;&ensp; &boxur;&nbsp;  trainA_mask | mask images in domain A
-| &ensp;&ensp; &boxur;&nbsp;  testA | testing images in domain A
-| &ensp;&ensp; &boxur;&nbsp;  testB | testing images in domain B
+| &ensp;&ensp; &boxur;&nbsp;  testA | testing images with a human in domain A
+| &ensp;&ensp; &boxur;&nbsp;  testB | testing images without a human in domain B
 
 and then move back to `Mask-Conditioned-CycleGAN-for-Human-Removal` folder by `cd ..` command.
 
