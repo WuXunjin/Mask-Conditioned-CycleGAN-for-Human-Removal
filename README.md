@@ -28,7 +28,7 @@ keywords: dynamic object removal, generative adversarial network, CycleGAN, unpa
 
 <br>
 
-# Application Architecture for Training
+# Application Architecture
 
 <div align="center">
 <img src="https://github.com/hiroyasuakada/dynamic-object-removal-with-unpaired-images/blob/master/demo/GraphicalAbstract1.png" alt="属性" title="タイトル">
